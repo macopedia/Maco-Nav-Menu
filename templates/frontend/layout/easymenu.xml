@@ -1,0 +1,12 @@
+<layout version="0.1.0">
+    <default>
+        <reference name="content">
+        </reference>
+    </default>
+    <routerfrontend_index_index>
+       <reference name="content">
+            <block type="easymenu/menu" name="menu"
+                   template="easymenu/menu.phtml" />
+        </reference>
+    </routerfrontend_index_index>
+</layout>

@@ -1,0 +1,9 @@
+<h3 class="head-categories icon-head">Menu</h3>
+<ul>
+    <?php
+    foreach ($this->getRootCategories() as $category) {
+        $children = $this->getChildrenCategories($category['id']);
+        echo $this->renderCategory($category);
+    }
+    ?>
+</ul>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <easymenu_adminhtml_index_index>
+        <reference name="content">
+            <block type="EasyMenu/Menu" name="menu"
+                   template="easymenu/menu.phtml"/>
+        </reference>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>macopedia/easymenu.css</name><params/></action>
+        </reference>
+    </easymenu_adminhtml_index_index>
+</layout>

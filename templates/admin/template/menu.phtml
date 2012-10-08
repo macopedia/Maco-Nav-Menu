@@ -1,0 +1,219 @@
+<div class="left-col">
+    <button onclick="addRoot();">Dodaj element nadrzędny</button>
+    <button onclick="addChild();">Dodaj element podrzędny</button>
+    <div id="tree">
+
+    </div>
+</div>
+<div class="right-col">
+    <div class="fieldset-wide">
+        <h2 id="header-1">Dodaj element nadrzędny</h2>
+
+        <h2 id="header-2">Dodaj element podrzędny</h2>
+
+        <h2 id="header-3">Edytuj element</h2>
+        <table class="form-list">
+            <form id="element-data" onsubmit="return false;">
+                <tr>
+                    <td class="label">Id</td>
+                    <td class="value"><input type="text" id="id" readonly="readonly"/></td>
+                </tr>
+                <tr>
+                    <td class="label">Nazwa</td>
+                    <td class="value"><input type="text" id="name" name="name"/></td>
+                </tr>
+                <tr>
+                    <td class="label">Element nadrzędny</td>
+                    <td class="value">
+                        <select id="parent" name="parent">
+                            <option value="0" selected="selected"></option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td class="label">Typ linku</td>
+                    <td class="value"><select id="type" name="type">
+                        <option value="1">Katalog</option>
+                        <option value="2">CMS</option>
+                        <option value="3">Strona</option>
+                    </select></td>
+                </tr>
+                <tr id="values">
+                    <td class="label">Wartość</td>
+                    <td class="value">
+                        <select id="catalog" name="value">
+                            <?php foreach ($this->getStoreCategories() as $cat): ?>
+                            <option value="<?php echo($cat->getId()); ?>"><?php echo $cat->getName(); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <select id="page" name="value">
+                            <?php foreach ($this->getCmsPages() as $page): ?>
+                            <option value="<?php echo($page->getId()); ?>"><?php echo $page->getTitle(); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <input id="address" type="text" name="value"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button id="add" onclick="saveElement()">Dodaj</button>
+                        <button id="delete" onclick="deleteElement()">Usuń</button>
+                    </td>
+                </tr>
+            </form>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    document.observe("dom:loaded", function () {
+        $('delete').hide();
+        $('id').up('tr').hide();
+        getTree();
+        selectMode(1);
+        chooser(1);
+    });
+    Event.observe($("type"), 'change', function () {
+        var type = $("type").value;
+        chooser(type);
+    });
+    function selectMode(mode) {
+        $$('h2').invoke('hide');
+        $('header-' + mode).show();
+    };
+    function chooser(type) {
+        $$("#values select,#values input").invoke('hide');
+        if (type == 1)
+            $('catalog').show();
+        else if (type == 2)
+            $('page').show();
+        else if (type == 3)
+            $('address').show();
+    }
+    function addRoot() {
+        selectMode(1);
+        $('id').value = '';
+        $('id').up('tr').hide();
+        $('name').value = '';
+        $('parent').value = 0;
+        //$('parent').up('tr').hide();
+        $('add').innerHTML = "Dodaj";
+        $('delete').hide();
+    }
+    function addChild() {
+        selectMode(2);
+        $('id').value = '';
+        $('id').up('tr').hide();
+        $('name').value = '';
+        //$('parent').up('tr').show();
+        $('add').innerHTML = "Dodaj";
+        if ($$("span.selected").size()) {
+            var selected = $$("span.selected").first().id.split('-');
+            $('parent').value = selected[1];
+        }
+        $('delete').hide();
+    }
+    function selectElement(element) {
+        selectMode(3);
+        $$('.selected').each(function (el) {
+            el.className = '';
+        });
+        $('delete').show();
+        element.className = 'selected';
+    }
+    function processData(transport) {
+        data = JSON.parse(transport.responseText);
+        $('tree').innerHTML = data.html;
+        select = $('parent');
+        select.innerHTML = '<option value="0"></option>';
+        data.elements.each(function (el) {
+            select.insert('<option value=' + el.id + '>' + el.name + '</option');
+        });
+        select.value = 0;
+    }
+    function getTree() {
+        new Ajax.Request('<?php echo $this->getBaseUrl(); ?>easymenu/adminhtml_index/tree/',
+                {
+                    method:'POST',
+                    onSuccess:function (transport) {
+                        processData(transport);
+                        var response = transport.responseText || "no response text";
+                        //alert("Success! \n\n" + response);
+                    },
+                    onFailure:function () {
+                        alert('Something went wrong...')
+                    }
+                })
+    }
+    function deleteElement() {
+        new Ajax.Request('<?php echo $this->getBaseUrl(); ?>easymenu/adminhtml_index/delete/',
+                {
+                    method:'POST',
+                    parameters:{id:$('id').value},
+                    onSuccess:function (transport) {
+                        //alert(transport.reponseText);
+                        processData(transport);
+                    },
+                    onFailure:function () {
+                        alert('Something went wrong...')
+                    }
+                })
+    }
+    function saveElement() {
+        name = $('name').value;
+        type = $('type').value;
+        if (type == 1)
+            value = $("catalog").value;
+        else if (type == 2)
+            value = $("page").value;
+        else if (type == 3)
+            value = $("address").value;
+        new Ajax.Request('<?php echo $this->getBaseUrl(); ?>easymenu/adminhtml_index/save/',
+                {
+                    method:'POST',
+                    parameters:{name:name, id:$('id').value, parent:$('parent').value, type:type, value:value },
+                    onSuccess:function (transport) {
+                        //$$('.selected').first().innerHTML = name;
+                        //$('tree').innerHTML = transport.responseText;
+                        processData(transport);
+                    },
+                    onFailure:function () {
+                        alert('Something went wrong...')
+                    }
+                })
+        return false;
+    }
+    function getElement(id, caller) {
+        $('id').up('tr').show();
+        $('name').up('tr').show();
+        $('parent').up('tr').show();
+        $('add').innerHTML = "Zapisz";
+        new Ajax.Request('<?php echo $this->getBaseUrl(); ?>easymenu/adminhtml_index/get/',
+                {
+                    method:'POST',
+                    parameters:{id:id},
+                    onSuccess:function (transport) {
+                        selectElement(caller);
+                        element = JSON.parse(transport.responseText);
+                        $("id").value = element.id;
+                        $("name").value = element.name;
+                        $("type").value = element.type;
+                        chooser(element.type);
+                        if (element.type == 1)
+                            $("catalog").value = element.value;
+                        else if (element.type == 2)
+                            $("page").value = element.value;
+                        else if (element.type == 3)
+                            $("address").value = element.value;
+                        $$('#parent option').each(function (el) {
+                            if (el.value == element.parent) {
+                                el.selected = true;
+                                throw $break;
+                            }
+                        });
+                    },
+                    onFailure:function () {
+                        alert('Something went wrong...')
+                    }
+                })
+    }
+    ;
+</script>

@@ -1,0 +1,18 @@
+#tree ul { margin-left: 50px; color: red; }
+#tree li span { cursor: pointer; }
+#tree li span.selected { color: green; }
+
+.left-col{
+    float: left;
+    padding-right: 20px;
+    border-right: #CCCCCC 2px solid;
+}
+
+.left-col button{
+    margin: 0px 5px 10px 0px;
+}
+
+.right-col{
+    float: left;
+    margin-left: 20px;
+}
