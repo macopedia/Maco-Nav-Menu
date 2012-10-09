@@ -1,7 +1,9 @@
 Macopedia_EasyMenu.xml	app/etc/modules/Macopedia_EasyMenu.xml
-code	app/code/local/Macopedia/EasyMenu
-templates/frontend app/design/frontend/default/Macopedia
+code app/code/local/Macopedia/EasyMenu
+templates/frontend/layout/easymenu.xml app/design/frontend/default/default/layout/easymenu.xml
+templates/frontend/template/easymenu/ app/design/frontend/default/default/template/easymenu/
 templates/admin/layout/easymenu.xml app/design/adminhtml/default/default/layout/easymenu.xml
 templates/admin/template app/design/adminhtml/default/default/template/easymenu/
 templates/css/admin skin/adminhtml/default/default/macopedia/
+templates/css/frontend skin/frontend/default/default/css/macopedia/
 admin app/design/adminhtml/default/Macopedia/

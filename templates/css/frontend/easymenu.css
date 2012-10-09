@@ -1,0 +1,19 @@
+#easymenu li{
+    display: inline-block;
+    vertical-align: top;
+}
+
+#easymenu li a{
+    padding: 5px;
+}
+
+#easymenu li a:hover{
+    font-weight: bold;
+}
+
+#easymenu li ul{
+}
+
+#easymenu li:hover ul{
+
+}

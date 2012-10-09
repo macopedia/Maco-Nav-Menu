@@ -7,13 +7,13 @@
     </modules>
     <frontend>
         <routers>
-            <routerfrontend>
+            <EasyMenu>
                 <use>standard</use>
                 <args>
                     <module>Macopedia_EasyMenu</module>
                     <frontName>easymenu</frontName>
                 </args>
-            </routerfrontend>
+            </EasyMenu>
         </routers>
         <layout>
             <updates>

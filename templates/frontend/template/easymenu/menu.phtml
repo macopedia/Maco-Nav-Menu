@@ -1,0 +1,7 @@
+<ul id="easymenu">
+<?php
+    foreach($this->getRootCategories() as $cat){
+        echo $this->renderCategory($cat,false);
+    }
+?>
+</ul>

@@ -2,7 +2,8 @@
 class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
 {
 
-    public function getRootCategories(){
+    public function getRootCategories()
+    {
         return Mage::getModel('EasyMenu/EasyMenu')->getRootCategories();
     }
 
@@ -16,13 +17,37 @@ class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
         return Mage::getModel('EasyMenu/EasyMenu')->getChildrenCategories($catId);
     }
 
-    public function renderCategory($category)
+    private function getLink($type, $value)
     {
+        if ($type == 1)
+            $url = Mage::getModel("catalog/category")->load($value)->getUrl();
+        else if ($type == 2) {
+            //var_dump(Mage::getModel("cms/page")->load($value));
+            //var_dump(Mage::Helper('cms/page')->getPageUrl());
+            $url = Mage::helper('cms/page')->getPageUrl($value);
+        }
+        else if($type ==3)
+            $url = $value;
+        if($url)
+            return $url;
+        else return false;
+    }
+
+    public function renderCategory($category, $admin = true)
+    {
+        //var_dump($category['type'].' '.$category['value']);
         $children = $this->getChildrenCategories($category['id']);
-        $html = '<li class="x-tree-node"><span id="el-'.$category['id'].'" onclick="getElement(' . $category['id'] . ',this);">' . $category['name'] . '</span>';
-        if (count($children)) $html .= '<ul>';
+        $html = '';
+        if ($admin) {
+            $html .= '<li><span id="el-' . $category['id'] . '" onclick="getElement(' . $category['id'] . ',this);">' . $category['name'] . '</span>';
+        } else{
+            $url = $this->getLink($category['type'], $category['value']);
+            if($url)
+                $html .= '<li><a href="' .$url. '" id="el-' . $category['id'] . '">' . $category['name'] . '</a>';
+        }
+        if (count($children)) $html .= '<ul id="' . $category['parent'] . '">';
         foreach ($children as $child) {
-            $html .= $this->renderCategory($child);
+            $html .= $this->renderCategory($child, $admin);
         }
         if (count($children)) $html .= '</ul>';
         $html .= '</li>';
