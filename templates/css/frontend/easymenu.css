@@ -1,19 +1,49 @@
+#easymenu{
+    list-style:none;
+    font-weight:bold;
+    margin-bottom:10px;
+    float:left;
+    width:100%;
+}
+
+#easymenu, #easymenu ul{
+    margin:0;
+    padding:0;
+    list-style-type:none;
+    list-style-position:outside;
+    position:relative;
+    line-height:1.5em;
+}
+
+#easymenu ul ul{
+    top:auto;
+}
+
+#easymenu li ul ul {
+    left:4em;
+    margin:0px 0 0 10px;
+}
+
+#easymenu li:hover ul ul, #easymenu li:hover ul ul ul, #easymenu li:hover ul ul ul ul{
+    display:none;
+}
+#easymenu li:hover ul, #easymenu li li:hover ul, #easymenu li li li:hover ul, #easymenu li li li li:hover ul{
+    display:block;
+}
+
+#easymenu li ul a{
+    width:4em;
+    float:left;
+}
+
+#easymenu ul {
+    position:absolute;
+    width:4em;
+    top:1.5em;
+    display:none;
+}
+
 #easymenu li{
-    display: inline-block;
-    vertical-align: top;
-}
-
-#easymenu li a{
-    padding: 5px;
-}
-
-#easymenu li a:hover{
-    font-weight: bold;
-}
-
-#easymenu li ul{
-}
-
-#easymenu li:hover ul{
-
+    float:left;
+    position:relative;
 }

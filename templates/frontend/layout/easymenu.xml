@@ -1,15 +1,22 @@
 <layout version="0.1.0">
     <default>
-        <reference name="content">
+        <reference name="top.menu">
+            <remove name="catalog.topnav"></remove>
+            <block type="EasyMenu/Tree" name="easymenu"
+                   template="easymenu/menu.phtml"/>
         </reference>
     </default>
     <easymenu_index_index>
-       <reference name="content">
+        <reference name="content">
             <block type="EasyMenu/Tree" name="menu"
-                   template="easymenu/menu.phtml" />
-       </reference>
+                   template="easymenu/menu.phtml"/>
+        </reference>
         <reference name="head">
-            <action method="addItem"><type>skin_css</type><name>css/macopedia/easymenu.css</name><params/></action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/macopedia/easymenu.css</name>
+                <params/>
+            </action>
         </reference>
     </easymenu_index_index>
 </layout>
