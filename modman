@@ -1,9 +1,8 @@
-Macopedia_EasyMenu.xml	app/etc/modules/Macopedia_EasyMenu.xml
-code app/code/local/Macopedia/EasyMenu
-templates/frontend/layout/easymenu.xml app/design/frontend/default/default/layout/easymenu.xml
-templates/frontend/template/easymenu/ app/design/frontend/default/default/template/easymenu/
-templates/admin/layout/easymenu.xml app/design/adminhtml/default/default/layout/easymenu.xml
-templates/admin/template app/design/adminhtml/default/default/template/easymenu/
-templates/css/admin skin/adminhtml/default/default/macopedia/
-templates/css/frontend skin/frontend/default/default/css/macopedia/
-admin app/design/adminhtml/default/Macopedia/
+src/app/code/local/Macopedia/EasyMenu     app/code/local/Macopedia/EasyMenu
+src/app/etc/modules/*    app/etc/modules/
+src/app/design/adminhtml/default/default/layout/macopedia/easymenu.xml  app/design/adminhtml/default/default/layout/macopedia/easymenu.xml
+src/app/design/adminhtml/default/default/template/macopedia/easymenu  app/design/adminhtml/default/default/template/macopedia/easymenu
+src/skin/adminhtml/default/default/macopedia/easymenu/ skin/adminhtml/default/default/macopedia/easymenu/
+src/app/design/frontend/base/default/layout/macopedia/easymenu.xml  app/design/frontend/base/default/layout/macopedia/easymenu.xml
+src/app/design/frontend/base/default/template/macopedia/easymenu/  app/design/frontend/base/default/template/macopedia/easymenu
+src/skin/frontend/base/default/macopedia/easymenu/ skin/frontend/base/default/macopedia/easymenu/

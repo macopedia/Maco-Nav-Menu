@@ -18,7 +18,7 @@
         <layout>
             <updates>
                 <EasyMenu>
-                    <file>easymenu.xml</file>
+                    <file>macopedia/easymenu.xml</file>
                 </EasyMenu>
             </updates>
         </layout>
@@ -38,7 +38,7 @@
         <layout>
             <updates>
                 <EasyMenu>
-                    <file>easymenu.xml</file>
+                    <file>macopedia/easymenu.xml</file>
                 </EasyMenu>
             </updates>
         </layout>
@@ -82,14 +82,14 @@
             </EasyMenu_mysql4>
         </models>
         <resources>
-            <EasyMenu_setup>
+            <macopedia_easymenu_setup>
                 <setup>
                     <module>Macopedia_EasyMenu</module>
                 </setup>
                 <connection>
                     <use>core_setup</use>
                 </connection>
-            </EasyMenu_setup>
+            </macopedia_easymenu_setup>
             <EasyMenu_write>
                 <connection>
                     <use>core_write</use>

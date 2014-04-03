@@ -92,7 +92,7 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
         $data['html'] = $this->getLayout()->createBlock(
             'EasyMenu/Tree',
             'Tree',
-            array('template' => 'easymenu/tree.phtml')
+            array('template' => 'macopedia/easymenu/tree.phtml')
         )->toHtml();
         return $data;
     }
