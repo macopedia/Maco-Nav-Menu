@@ -1,18 +1,20 @@
 #easymenu{
     list-style:none;
     font-weight:bold;
-    margin-bottom:10px;
-    float:left;
-    width:100%;
+    width: 918px;
+    margin: 0 auto;
+    padding: 0 16px;
+    font-size: 13px;
 }
 
-#easymenu, #easymenu ul{
+#easymenu ul{
     margin:0;
     padding:0;
     list-style-type:none;
     list-style-position:outside;
     position:relative;
     line-height:1.5em;
+    width: 15em;
 }
 
 #easymenu ul ul{
@@ -42,7 +44,6 @@
     top:1.5em;
     display:none;
 }
-
 #easymenu li{
     float:left;
     position:relative;
