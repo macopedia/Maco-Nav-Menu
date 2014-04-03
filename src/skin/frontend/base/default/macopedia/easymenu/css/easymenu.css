@@ -46,4 +46,5 @@
 #easymenu li{
     float:left;
     position:relative;
+    padding: 0 5px;
 }

@@ -5,6 +5,13 @@
             <block type="EasyMenu/Tree" name="easymenu"
                    template="macopedia/easymenu/menu.phtml"/>
         </reference>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>macopedia/easymenu/css/easymenu.css</name>
+                <params/>
+            </action>
+        </reference>
     </default>
     <easymenu_index_index>
         <reference name="content">
