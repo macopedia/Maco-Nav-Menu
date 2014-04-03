@@ -55,6 +55,15 @@
                 </children>
             </EasyMenu>
         </menu>
+        <translate>
+            <modules>
+                <EasyMenu>
+                    <files>
+                        <default>Macopedia_Easymenu.csv</default>
+                    </files>
+                </EasyMenu>
+            </modules>
+        </translate>
     </adminhtml>
     <global>
         <blocks>

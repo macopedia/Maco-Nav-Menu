@@ -6,3 +6,4 @@ src/skin/adminhtml/default/default/macopedia/easymenu/ skin/adminhtml/default/de
 src/app/design/frontend/base/default/layout/macopedia/easymenu.xml  app/design/frontend/base/default/layout/macopedia/easymenu.xml
 src/app/design/frontend/base/default/template/macopedia/easymenu/  app/design/frontend/base/default/template/macopedia/easymenu
 src/skin/frontend/base/default/macopedia/easymenu/ skin/frontend/base/default/macopedia/easymenu/
+src/app/locale/pl_PL/* app/locale/pl_PL/
