@@ -7,8 +7,7 @@
     <div class="fieldset-wide">
         <h2 id="header-1"><?php echo $this->__('Add parent element'); ?></h2>
         <h2 id="header-2"><?php echo $this->__('Add child element'); ?></h2>
-
-        <h2 id="header-3">Edytuj element</h2>
+        <h2 id="header-3"><?php echo $this->__('Edit element'); ?></h2>
             <form id="element-data" onsubmit="return false;">
                 <table class="form-list">
                     <tr>
@@ -35,11 +34,11 @@
                             </select></td>
                     </tr>
                     <tr>
-                        <td class="label">Typ linku</td>
+                        <td class="label"><?php echo $this->__('Link type'); ?></td>
                         <td class="value"><select id="type" name="type">
                             <option value="1"><?php echo $this->__('Catalog'); ?></option>
-                            <option value="2"><?php echo $this->__('CMS'); ?></option>
-                            <option value="3"><?php echo $this->__('Page'); ?></option>
+                            <option value="2"><?php echo $this->__('CMS page'); ?></option>
+                            <option value="3"><?php echo $this->__('External page'); ?></option>
                         </select></td>
                     </tr>
                     <tr id="values">
@@ -66,6 +65,12 @@
                                 <?php endforeach; ?>
                             </select>
                             <input id="address" type="text" name="value" class="required-entry" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label"><?php echo $this->__('Priority'); ?></td>
+                        <td class="value">
+                            <input type="text" id="priority" name="priority">
                         </td>
                     </tr>
                     <tr>
@@ -129,7 +134,7 @@
         $('id').up('tr').hide();
         $('name').value = '';
         $('parent').value = 0;
-        //$('parent').up('tr').hide();
+        $('priority').value = 0;
         $('add').innerHTML = "Dodaj";
         $('delete').hide();
     }
@@ -138,7 +143,7 @@
         $('id').value = '';
         $('id').up('tr').hide();
         $('name').value = '';
-        //$('parent').up('tr').show();
+        $('priority').value = 0;
         $('add').innerHTML = "Dodaj";
         if ($$("span.selected").size()) {
             var selected = $$("span.selected").first().id.split('-');
@@ -197,6 +202,7 @@
         }
         name = $('name').value;
         type = $('type').value;
+        priority = $('priority').value;
         if (type == 1)
             value = $("catalog").value;
         else if (type == 2)
@@ -206,7 +212,8 @@
         new Ajax.Request('<?php echo $this->getBaseUrl(); ?>easymenu/adminhtml_index/save/',
                 {
                     method:'POST',
-                    parameters:{name:name, id:$('id').value, parent:$('parent').value, type:type, value:value },
+                    parameters:{name:name, id:$('id').value, parent:$('parent').value, type:type, value:value,
+                        priority:priority },
                     onSuccess:function (transport) {
                         processData(transport);
                     },
@@ -231,6 +238,7 @@
                         $("id").value = element.id;
                         $("name").value = element.name;
                         $("type").value = element.type;
+                        $("priority").value = element.priority;
                         chooser(element.type);
                         if (element.type == 1)
                             $("catalog").value = element.value;

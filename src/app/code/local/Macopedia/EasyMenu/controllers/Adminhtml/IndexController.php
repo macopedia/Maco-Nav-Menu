@@ -50,6 +50,7 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
         $parent = $this->getRequest()->getParam('parent');
         $type = $this->getRequest()->getParam('type');
         $value = $this->getRequest()->getParam('value');
+        $priority = $this->getRequest()->getParam('priority');
         $model = Mage::getModel('EasyMenu/EasyMenu');
         if ($id) {
             $children = $model->getDescendantsCategories($id);
@@ -72,6 +73,7 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
         $element->setName($name);
         $element->setType($type);
         $element->setValue($value);
+        $element->setPriority($priority);
         if ($parent != $element->getId())
             $element->setParent($parent);
         $element->save();
