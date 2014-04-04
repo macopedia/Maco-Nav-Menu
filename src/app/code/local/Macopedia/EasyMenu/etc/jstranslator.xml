@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<jstranslator>
+    <easymenu-add translate="message" module="EasyMenu">
+        <message>Add</message>
+    </easymenu-add>
+    <easymenu-save translate="message" module="EasyMenu">
+        <message>Save</message>
+    </easymenu-save>
+</jstranslator>

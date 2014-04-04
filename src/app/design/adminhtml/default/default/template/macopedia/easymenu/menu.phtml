@@ -135,7 +135,7 @@
         $('name').value = '';
         $('parent').value = 0;
         $('priority').value = 0;
-        $('add').innerHTML = "Dodaj";
+        $('add').innerHTML = Translator.translate('Add');
         $('delete').hide();
     }
     function addChild() {
@@ -144,7 +144,7 @@
         $('id').up('tr').hide();
         $('name').value = '';
         $('priority').value = 0;
-        $('add').innerHTML = "Dodaj";
+        $('add').innerHTML = Translator.translate('Add');
         if ($$("span.selected").size()) {
             var selected = $$("span.selected").first().id.split('-');
             $('parent').value = selected[1];
@@ -189,7 +189,6 @@
                     parameters:{id:$('id').value},
                     onSuccess:function (transport) {
                         processData(transport);
-//                        $$('.validation-advice').each.(Element.hide);
                     },
                     onFailure:function () {
                         alert('Something went wrong...')
@@ -227,7 +226,7 @@
         $('id').up('tr').show();
         $('name').up('tr').show();
         $('parent').up('tr').show();
-        $('add').innerHTML = "Zapisz";
+        $('add').innerHTML = Translator.translate('Save');
         new Ajax.Request('<?php echo $this->getBaseUrl(); ?>easymenu/adminhtml_index/get/',
                 {
                     method:'POST',
