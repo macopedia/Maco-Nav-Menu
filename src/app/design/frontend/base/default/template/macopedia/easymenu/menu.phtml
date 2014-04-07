@@ -1,7 +1,9 @@
-<ul id="nav">
-<?php
-    foreach($this->getRootCategories() as $cat){
-        echo $this->renderCategory($cat, false);
-    }
-?>
-</ul>
+<?php if(Mage::helper('EasyMenu')->isEnabled()): ?>
+    <ul id="nav">
+        <?php
+        foreach($this->getRootCategories() as $cat){
+            echo $this->renderCategory($cat, false);
+        }
+        ?>
+    </ul>
+<?php endif; ?>

@@ -111,4 +111,11 @@
             </EasyMenu_read>
         </resources>
     </global>
+    <default>
+        <easymenu>
+            <options>
+                <enable>1</enable>
+            </options>
+        </easymenu>
+    </default>
 </config>

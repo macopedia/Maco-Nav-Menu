@@ -1,8 +1,10 @@
 <layout version="0.1.0">
     <default>
         <reference name="top.menu">
-            <remove name="catalog.topnav" />
-            <block type="EasyMenu/Tree" name="easymenu"
+            <action method="unsetChild" ifconfig="easymenu/options/enable">
+                <name>catalog.topnav</name>
+            </action>
+            <block type="EasyMenu/Tree" name="easymenu" ifconfig="easymenu/options/enable"
                    template="macopedia/easymenu/menu.phtml"/>
         </reference>
         <reference name="head">
