@@ -1,16 +1,13 @@
 <?php
 class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Controller_Action
 {
+
     public function indexAction()
     {
         $this->loadLayout();
         $categories = Mage::getModel('catalog/category')->getCollection()
             ->addAttributeToSelect('name')->load();
         $cms = Mage::getModel('cms/page')->getCollection()->load();
-/*        foreach($cms as $page){
-            var_dump($page->getTitle());
-        }*/
-        //die();
         Mage::register('pages',$cms);
         Mage::register('categories', $categories);
         $this->renderLayout();
@@ -45,6 +42,10 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 
     public function saveAction()
     {
+        $storeId = $this->getRequest()->getParam('store');
+        if(!$storeId) {
+            $storeId = $this->getDefaultStoreId();
+        }
         $id = $this->getRequest()->getParam('id', 0);
         $name = $this->getRequest()->getParam('name');
         $parent = $this->getRequest()->getParam('parent');
@@ -52,6 +53,7 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
         $value = $this->getRequest()->getParam('value');
         $priority = $this->getRequest()->getParam('priority');
         $model = Mage::getModel('EasyMenu/EasyMenu');
+
         if ($id) {
             $children = $model->getDescendantsCategories($id);
             $element = $model->load($id);
@@ -68,18 +70,43 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
             $element = $model->load($id);
         }
         else{
-            $element = new Macopedia_EasyMenu_Model_EasyMenu();
+            $element = Mage::getModel('EasyMenu/EasyMenu');
         }
+
         $element->setName($name);
         $element->setType($type);
         $element->setValue($value);
         $element->setPriority($priority);
-        if ($parent != $element->getId())
+        $element->setStore($storeId);
+
+        if ($parent != $element->getId()) {
             $element->setParent($parent);
+        }
+
         $element->save();
-        //die();
+
         $this->getResponse()->setHeader('Content-type', 'application/json');
         $this->getResponse()->setBody(json_encode($this->getTree()));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDefaultStoreId()
+    {
+        return Mage::app()
+            ->getWebsite(true)
+            ->getDefaultGroup()
+            ->getDefaultStoreId();
+    }
+
+    public function getStoreId()
+    {
+        $storeId = $this->getRequest()->getParam('store');
+        if(!$storeId) {
+            $storeId = $this->getDefaultStoreId();
+        }
+        return $storeId;
     }
 
     public function treeAction()
@@ -90,7 +117,11 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 
     private function getTree()
     {
-        $data['elements'] = Mage::getModel('EasyMenu/EasyMenu')->getCollection()->getData();
+        $menuCollection = Mage::getModel('EasyMenu/EasyMenu')
+            ->getCollection()->addFieldToFilter('store', array(
+                'eq' => $this->getStoreId()
+            ));
+        $data['elements'] = $menuCollection->getData();
         $data['html'] = $this->getLayout()->createBlock(
             'EasyMenu/Tree',
             'Tree',

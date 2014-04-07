@@ -170,7 +170,7 @@
         select.value = 0;
     }
     function getTree() {
-        new Ajax.Request('<?php echo $this->getBaseUrl(); ?>easymenu/adminhtml_index/tree/',
+        new Ajax.Request('<?php echo $this->getTreeUrl(); ?>',
                 {
                     method:'POST',
                     onSuccess:function (transport) {
@@ -183,7 +183,7 @@
                 })
     }
     function deleteElement() {
-        new Ajax.Request('<?php echo $this->getBaseUrl(); ?>easymenu/adminhtml_index/delete/',
+        new Ajax.Request('<?php echo $this->getDeleteUrl(); ?>',
                 {
                     method:'POST',
                     parameters:{id:$('id').value},
@@ -208,7 +208,7 @@
             value = $("page").value;
         else if (type == 3)
             value = $("address").value;
-        new Ajax.Request('<?php echo $this->getBaseUrl(); ?>easymenu/adminhtml_index/save/',
+        new Ajax.Request('<?php echo $this->getSaveUrl(); ?>',
                 {
                     method:'POST',
                     parameters:{name:name, id:$('id').value, parent:$('parent').value, type:type, value:value,
@@ -227,7 +227,7 @@
         $('name').up('tr').show();
         $('parent').up('tr').show();
         $('add').innerHTML = Translator.translate('Save');
-        new Ajax.Request('<?php echo $this->getBaseUrl(); ?>easymenu/adminhtml_index/get/',
+        new Ajax.Request('<?php echo $this->getElementUrl(); ?>',
                 {
                     method:'POST',
                     parameters:{id:id},

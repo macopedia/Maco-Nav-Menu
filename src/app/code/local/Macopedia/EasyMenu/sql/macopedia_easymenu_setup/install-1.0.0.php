@@ -36,8 +36,13 @@ $table = $installer->getConnection()->newTable($installer->getTable('EasyMenu/Ea
         'priority', Varien_Db_Ddl_Table::TYPE_INTEGER, 11, array(
             'nullable' => false,
         ), 'priority'
+    )->addColumn(
+        'store', Varien_Db_Ddl_Table::TYPE_INTEGER, 11, array(
+            'nullable'  => true,
+            'comment'   => 'Store Id',
+        ), 'store'
     )
-    ->setComment('Macopedia_ResetPass/oldpassword table');
+    ->setComment('Easymenu table');
 $installer->getConnection()->createTable($table);
 
 $installer->endSetup();

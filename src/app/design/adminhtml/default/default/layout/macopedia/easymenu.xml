@@ -2,6 +2,11 @@
 <layout version="0.1.0">
     <easymenu_adminhtml_index_index>
         <reference name="content">
+            <block type="EasyMenu/adminhtml_store_switcher" name="store_switcher" as="store_switcher">
+                <action method="setUseConfirm">
+                    <params>0</params>
+                </action>
+            </block>
             <block type="EasyMenu/Menu" name="menu"
                    template="macopedia/easymenu/menu.phtml"/>
         </reference>

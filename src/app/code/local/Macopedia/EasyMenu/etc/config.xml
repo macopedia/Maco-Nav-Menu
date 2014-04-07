@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Macopedia_EasyMenu>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </Macopedia_EasyMenu>
     </modules>
     <frontend>
