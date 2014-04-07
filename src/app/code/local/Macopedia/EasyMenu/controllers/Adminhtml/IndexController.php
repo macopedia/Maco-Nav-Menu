@@ -5,11 +5,22 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
     public function indexAction()
     {
         $this->loadLayout();
-        $categories = Mage::getModel('catalog/category')->getCollection()
-            ->addAttributeToSelect('name')->load();
-        $cms = Mage::getModel('cms/page')->getCollection()->load();
-        Mage::register('pages',$cms);
+
+        $store = Mage::getModel('core/store')->load($this->getStoreId());
+        $rootCategoryId = $store->getRootCategoryId();
+        $categories = Mage::getModel('catalog/category')
+            ->getCollection()
+            ->addAttributeToFilter('path', array('like' => "1/{$rootCategoryId}/%"))
+            ->addFieldToFilter('is_active' ,array("in"=>array('1')))
+            ->addAttributeToSelect('name');
         Mage::register('categories', $categories);
+
+        $cms = Mage::getModel('cms/page')->getCollection()
+            ->addStoreFilter($this->getStoreId())
+            ->load();
+
+        Mage::register('pages',$cms);
+
         $this->renderLayout();
     }
 
