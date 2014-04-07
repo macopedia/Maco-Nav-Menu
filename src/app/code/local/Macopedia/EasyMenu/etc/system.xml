@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <tabs>
-        <macopedia translate="label" module="macopedia_customercoupons">
+        <macopedia translate="label" module="EasyMenu">
             <label>Macopedia</label>
             <sort_order>20</sort_order>
         </macopedia>
     </tabs>
     <sections>
-        <easymenu translate="label" module="macopedia_customercoupons">
+        <easymenu translate="label" module="EasyMenu">
             <label>Easymenu</label>
             <tab>macopedia</tab>
             <frontend_type>text</frontend_type>
