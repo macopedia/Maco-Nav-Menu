@@ -33,19 +33,6 @@
                 </EasyMenu>
             </updates>
         </layout>
-        <menu>
-            <EasyMenu module="EasyMenu">
-                <title>Macopedia</title>
-                <sort_order>100</sort_order>
-                <children>
-                    <items module="EasyMenu">
-                        <title>Easy Menu</title>
-                        <sort_order>0</sort_order>
-                        <action>EasyMenu/adminhtml_index</action>
-                    </items>
-                </children>
-            </EasyMenu>
-        </menu>
         <translate>
             <modules>
                 <EasyMenu>
