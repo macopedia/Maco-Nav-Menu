@@ -6,15 +6,6 @@
         </Macopedia_EasyMenu>
     </modules>
     <frontend>
-        <routers>
-            <EasyMenu>
-                <use>standard</use>
-                <args>
-                    <module>Macopedia_EasyMenu</module>
-                    <frontName>easymenu</frontName>
-                </args>
-            </EasyMenu>
-        </routers>
         <layout>
             <updates>
                 <EasyMenu>
