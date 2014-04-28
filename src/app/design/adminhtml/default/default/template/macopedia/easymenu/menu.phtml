@@ -152,20 +152,13 @@
         }
         $('delete').hide();
     }
-    function processData(transport) {
-        data = JSON.parse(transport.responseText);
-        select = $('parent');
-        select.innerHTML = '<option value="0"></option>';
-        data.elements.each(function (el) {
-            select.insert('<option value=' + el.id + '>' + el.name + '</option');
-        });
-        select.value = 0;
-    }
     function updateParentsList(response) {
         var select = $('parent');
         select.innerHTML = '';
+        select.insert('<option value="0">' + " " + '</option>');
+        select.value = 0;
         response.data.each(function(el) {
-            select.insert('<option value=' + el.id + '>' + el.text + '</option');
+            select.insert('<option value=' + el.id + '>' + el.text + '</option>');
             if(el.children) {
                 checkChildren(el);
             }
@@ -175,7 +168,7 @@
         var child;
         var select = $('parent');
         for(var i = 0; i < el.children.count, child = el.children[i]; i++) {
-            select.insert('<option value=' + child.id + '>' + child.text + '</option');
+            select.insert('<option value=' + child.id + '>' + child.text + '</option>');
             if(child.children) {
                 checkChildren(child);
             }
