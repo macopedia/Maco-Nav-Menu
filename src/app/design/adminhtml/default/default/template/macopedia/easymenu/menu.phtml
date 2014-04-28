@@ -162,8 +162,9 @@
         select.value = 0;
     }
     function updateParentsList(response) {
+        var select = $('parent');
+        select.innerHTML = '';
         response.data.each(function(el) {
-            var select = $('parent');
             select.insert('<option value=' + el.id + '>' + el.text + '</option');
             if(el.children) {
                 checkChildren(el);
