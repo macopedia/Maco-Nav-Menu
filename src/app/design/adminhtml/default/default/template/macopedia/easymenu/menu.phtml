@@ -89,6 +89,7 @@
     document.observe("dom:loaded", function () {
         $('delete').hide();
         $('id').up('tr').hide();
+        $('priority').value = 1;
         getTree();
         selectMode(1);
         chooser(1);
@@ -134,7 +135,7 @@
         $('id').up('tr').hide();
         $('name').value = '';
         $('parent').value = 0;
-        $('priority').value = 0;
+        $('priority').value = 1;
         $('add').innerHTML = Translator.translate('Add');
         $('delete').hide();
     }
@@ -143,7 +144,7 @@
         $('id').value = '';
         $('id').up('tr').hide();
         $('name').value = '';
-        $('priority').value = 0;
+        $('priority').value = 1;
         $('add').innerHTML = Translator.translate('Add');
         if ($$("span.selected").size()) {
             var selected = $$("span.selected").first().id.split('-');
@@ -151,17 +152,8 @@
         }
         $('delete').hide();
     }
-    function selectElement(element) {
-        selectMode(3);
-        $$('.selected').each(function (el) {
-            el.className = '';
-        });
-        $('delete').show();
-        element.className = 'selected';
-    }
     function processData(transport) {
         data = JSON.parse(transport.responseText);
-        $('tree').innerHTML = data.html;
         select = $('parent');
         select.innerHTML = '<option value="0"></option>';
         data.elements.each(function (el) {
@@ -169,16 +161,37 @@
         });
         select.value = 0;
     }
+    function updateParentsList(response) {
+        response.data.each(function(el) {
+            console.log(el.id + '>' + el.text);
+            var select = $('parent');
+            select.insert('<option value=' + el.id + '>' + el.text + '</option');
+            if(el.children) {
+                checkChildren(el);
+            }
+        });
+    }
+    function checkChildren(el) {
+        var child;
+        var select = $('parent');
+        for(var i = 0; i < el.children.count, child = el.children[i]; i++) {
+            select.insert('<option value=' + child.id + '>' + child.text + '</option');
+            if(child.children) {
+                checkChildren(child);
+            }
+            console.log(child.id + '>' + child.text);
+        }
+    }
     function getTree() {
-        new Ajax.Request('<?php echo $this->getTreeUrl(); ?>',
+        new Ajax.Request('<?php echo $this->getNewTreeUrl(); ?>',
                 {
                     method:'POST',
-                    onSuccess:function (transport) {
-                        processData(transport);
-                        var response = transport.responseText || "no response text";
-                    },
                     onFailure:function () {
                         alert('Something went wrong...')
+                    },
+                    onComplete : function(transport) {
+                        var response = eval('(' + transport.responseText + ')');
+                        updateParentsList(response);
                     }
                 })
     }
@@ -187,11 +200,18 @@
                 {
                     method:'POST',
                     parameters:{id:$('id').value},
-                    onSuccess:function (transport) {
-                        processData(transport);
-                    },
                     onFailure:function () {
                         alert('Something went wrong...')
+                    },
+                    onComplete : function(transport) {
+                        var response = eval('(' + transport.responseText + ')');
+
+                        if (!response['parameters']) {
+                            return false;
+                        }
+                        updateParentsList(response);
+                        _renderNewTree(response);
+                        addRoot();
                     }
                 })
     }
@@ -213,49 +233,19 @@
                     method:'POST',
                     parameters:{name:name, id:$('id').value, parent:$('parent').value, type:type, value:value,
                         priority:priority },
-                    onSuccess:function (transport) {
-                        processData(transport);
-                    },
                     onFailure:function () {
                         alert('Something went wrong...')
+                    },
+                    onComplete : function(transport) {
+                        var response = eval('(' + transport.responseText + ')');
+                        if (!response['parameters']) {
+                            return false;
+                        }
+                        updateParentsList(response);
+                        _renderNewTree(response);
                     }
                 })
         return false;
-    }
-    function getElement(id, caller) {
-        $('id').up('tr').show();
-        $('name').up('tr').show();
-        $('parent').up('tr').show();
-        $('add').innerHTML = Translator.translate('Save');
-        new Ajax.Request('<?php echo $this->getElementUrl(); ?>',
-                {
-                    method:'POST',
-                    parameters:{id:id},
-                    onSuccess:function (transport) {
-                        selectElement(caller);
-                        element = JSON.parse(transport.responseText);
-                        $("id").value = element.id;
-                        $("name").value = element.name;
-                        $("type").value = element.type;
-                        $("priority").value = element.priority;
-                        chooser(element.type);
-                        if (element.type == 1)
-                            $("catalog").value = element.value;
-                        else if (element.type == 2)
-                            $("page").value = element.value;
-                        else if (element.type == 3)
-                            $("address").value = element.value;
-                        $$('#parent option').each(function (el) {
-                            if (el.value == element.parent) {
-                                el.selected = true;
-                                throw $break;
-                            }
-                        });
-                    },
-                    onFailure:function () {
-                        alert('Something went wrong...')
-                    }
-                })
     }
     ;
 </script>

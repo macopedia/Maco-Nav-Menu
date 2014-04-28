@@ -1,12 +1,14 @@
 <?php
 class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Controller_Action
 {
-
+    /**
+     * Easymenu
+     */
     public function indexAction()
     {
-        $this->loadLayout();
+        $this->_initAction();
 
-        $store = Mage::getModel('core/store')->load($this->getStoreId());
+        $store = Mage::getModel('core/store')->load($this->_helper()->getStoreId());
         $rootCategoryId = $store->getRootCategoryId();
         $categories = Mage::getModel('catalog/category')
             ->getCollection()
@@ -16,7 +18,7 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
         Mage::register('categories', $categories);
 
         $cms = Mage::getModel('cms/page')->getCollection()
-            ->addStoreFilter($this->getStoreId())
+            ->addStoreFilter($this->_helper()->getStoreId())
             ->load();
 
         Mage::register('pages',$cms);
@@ -24,6 +26,34 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
         $this->renderLayout();
     }
 
+    /**
+     * Init actions
+     *
+     * @return Macopedia_Quarticon_Adminhtml_QuarticonController
+     */
+    protected function _initAction()
+    {
+        $this->loadLayout()
+            ->_setActiveMenu('easymenu');
+        $this->_title($this->__('Macopedia'))->_title($this->__('Easymenu'));
+        return $this;
+    }
+
+    /**
+     * init menu element
+     *
+     * @return Macopedia_EasyMenu_Model_EasyMenu
+     */
+    protected function _initMenuElement()
+    {
+        $elementId = (int) $this->getRequest()->getParam('id');
+        $element = Mage::getModel('EasyMenu/EasyMenu')->load($elementId);
+        return $element;
+    }
+
+    /**
+     * Get element
+     */
     public function getAction()
     {
         $this->getResponse()->setHeader('Content-type', 'application/json');
@@ -34,7 +64,10 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
         } else $this->getResponse()->setBody(null);
     }
 
-    public function deleteAction(){
+    /**
+     * Delete element
+     */
+    public function deleteAction() {
         $id = $this->getRequest()->getParam('id',0);
         $model = Mage::getModel('EasyMenu/EasyMenu');
         $element = $model->load($id);
@@ -48,9 +81,12 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
             $element->delete();
         }
         $this->getResponse()->setHeader('Content-type', 'application/json');
-        $this->getResponse()->setBody(json_encode($this->getTree()));
+        $this->newTreeAction();
     }
 
+    /**
+     * Save menu element
+     */
     public function saveAction()
     {
         $storeId = $this->getRequest()->getParam('store');
@@ -97,48 +133,77 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
         $element->save();
 
         $this->getResponse()->setHeader('Content-type', 'application/json');
-        $this->getResponse()->setBody(json_encode($this->getTree()));
+        $this->newTreeAction();
     }
 
     /**
-     * @return mixed
+     * Move element
      */
-    public function getDefaultStoreId()
+    public function moveAction()
     {
-        return Mage::app()
-            ->getWebsite(true)
-            ->getDefaultGroup()
-            ->getDefaultStoreId();
-    }
-
-    public function getStoreId()
-    {
-        $storeId = $this->getRequest()->getParam('store');
-        if(!$storeId) {
-            $storeId = $this->getDefaultStoreId();
+        $menuItemId = (int) $this->getRequest()->getParam('id');
+        /* @var $menuItem Macopedia_EasyMenu_Model_EasyMenu */
+        $menuItem = $this->_initMenuElement();
+        if (!$menuItem) {
+            $this->getResponse()->setBody(Mage::helper('cms')->__('Page move error'));
+            return;
         }
-        return $storeId;
+
+        /**
+         * New parent page identifier
+         */
+        $parentNodeId   = $this->getRequest()->getPost('pid', false);
+        /**
+         * Page id after which we have put our page
+         */
+        $prevNodeId     = $this->getRequest()->getPost('aid', false);
+
+        try {
+            $menuItem->move($parentNodeId, $prevNodeId);
+            $this->getResponse()->setBody("SUCCESS");
+        }
+        catch (Mage_Core_Exception $e) {
+            $this->getResponse()->setBody($e->getMessage());
+        }
+        catch (Exception $e){
+            $this->getResponse()->setBody(Mage::helper('cms')->__('Page move error'.$e));
+            Mage::logException($e);
+        }
     }
 
-    public function treeAction()
+    /**
+     * Get new tree
+     */
+    public function newTreeAction()
     {
-        $this->getResponse()->setHeader('Content-type', 'application/json');
-        $this->getResponse()->setBody(json_encode($this->getTree()));
+        $block = $this->getLayout()->createBlock('EasyMenu/adminhtml_easyMenu_tree');
+        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array(
+                    'data' => $block->getNewTree(),
+                    'parameters' => array(
+                        'text'        => 'MENU',
+                        'draggable'   => false,
+                        'allowDrop'   => true,
+                        'id'          => 'menu-root',
+                        'root_visible'=> true
+                    ))));
     }
 
-    private function getTree()
+    /**
+     * @return string
+     */
+    public function jsonTreeAction()
     {
-        $menuCollection = Mage::getModel('EasyMenu/EasyMenu')
-            ->getCollection()->addFieldToFilter('store', array(
-                'eq' => $this->getStoreId()
-            ));
-        $data['elements'] = $menuCollection->getData();
-        $data['html'] = $this->getLayout()->createBlock(
-            'EasyMenu/Tree',
-            'Tree',
-            array('template' => 'macopedia/easymenu/tree.phtml')
-        )->toHtml();
-        return $data;
+        $jsonArray = $this->_helper()->getMenuTree();
+        return Zend_Json::encode($jsonArray);
     }
 
+    /**
+     * Helper
+     *
+     * @return Macopedia_EasyMenu_Helper_Data
+     */
+    protected function _helper()
+    {
+        return Mage::helper('EasyMenu');
+    }
 }

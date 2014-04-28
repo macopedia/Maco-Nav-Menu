@@ -1,17 +1,35 @@
 <?php
+
+/**
+ *
+ * @method string getName()
+ * @method int getParent()
+ * @method int getId()
+ * @method int getValue()
+ * @method string getPriority()
+ * @method int getStore()
+ */
 class Macopedia_EasyMenu_Model_EasyMenu extends Mage_Core_Model_Abstract
 {
-     public function _construct()
+    /**
+     * construct
+     */
+    public function _construct()
      {
          parent::_construct();
          $this->_init('EasyMenu/EasyMenu');
      }
 
+    /**
+     * Get root categories
+     *
+     * @return mixed
+     */
     public function getRootCategories()
     {
         $collection = $this->getCollection();
         $collection->addFieldToFilter('store', array(
-            'eq' => $this->getStoreId()
+            'eq' => $this->_helper()->getStoreId()
         ));
         $rootCategories = $collection->addFilter('parent', 0)->setOrder('priority','asc')->getData();
         return $rootCategories;
@@ -21,21 +39,29 @@ class Macopedia_EasyMenu_Model_EasyMenu extends Mage_Core_Model_Abstract
     {
         $collection = $this->getCollection();
         $collection->addFieldToFilter('store', array(
-                'eq' => $this->getStoreId()
+                'eq' => $this->_helper()->getStoreId()
             ));
-        $childrenCategories = $collection->addFilter('parent', $catId)->setOrder('priority','asc')->getData();
+        $childrenCategories = $collection->addFilter('parent', $catId)
+            ->setOrder('priority','asc')->getData();
         foreach($childrenCategories as $child)
             foreach($this->getDescendantsCategories($child['id']) as $element)
                 array_push($childrenCategories,$element);
         return $childrenCategories;
     }
 
+    /**
+     * @param $catId
+     * @param bool $object
+     *
+     * @return mixed
+     */
     public function getChildrenCategories($catId,$object = false)
     {
         $collection = $this->getCollection();
         $collection->addFieldToFilter('store', array(
-                'eq' => $this->getStoreId()
-            ));
+                'eq' => $this->_helper()->getStoreId()
+            ))
+            ->setOrder('priority','asc');
 
         if(!$object) {
             $childrenCategories = $collection->addFilter('parent', $catId)->setOrder('priority','asc')->getData();
@@ -47,29 +73,40 @@ class Macopedia_EasyMenu_Model_EasyMenu extends Mage_Core_Model_Abstract
     }
 
     /**
-     * @return mixed
+     * @param $parentId
+     * @param $afterMenuItemId
+     *
+     * @return $this
+     * @throws Exception
      */
-    public function getStoreId()
+    public function move($parentId, $afterMenuItemId)
     {
-        if(Mage::app()->getStore()->isAdmin()) {
-            $storeId = Mage::app()->getRequest()->getParam('store');
-            if(!$storeId) {
-                $storeId = $this->getDefaultStoreId();
-            }
-        } else {
-            $storeId = Mage::app()->getStore()->getId();
+
+        $parent = Mage::getModel('EasyMenu/EasyMenu')->load($parentId);
+
+        $this->_getResource()->beginTransaction();
+        try {
+
+            $this->getResource()->changeParent($this, $parent, $afterMenuItemId);
+
+            $this->_getResource()->commit();
+
+            $moveComplete = true;
+        } catch (Exception $e) {
+            $this->_getResource()->rollBack();
+            throw $e;
         }
-        return $storeId;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * Helper
+     *
+     * @return Macopedia_EasyMenu_Helper_Data
      */
-    public function getDefaultStoreId()
+    protected function _helper()
     {
-        return Mage::app()
-            ->getWebsite(true)
-            ->getDefaultGroup()
-            ->getDefaultStoreId();
+        return Mage::helper('EasyMenu');
     }
 }

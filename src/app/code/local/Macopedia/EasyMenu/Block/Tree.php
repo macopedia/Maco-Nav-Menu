@@ -22,8 +22,6 @@ class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
         if ($type == 1)
             $url = Mage::getModel("catalog/category")->load($value)->getUrl();
         else if ($type == 2) {
-            //var_dump(Mage::getModel("cms/page")->load($value));
-            //var_dump(Mage::Helper('cms/page')->getPageUrl());
             $url = Mage::helper('cms/page')->getPageUrl($value);
         }
         else if($type ==3)
