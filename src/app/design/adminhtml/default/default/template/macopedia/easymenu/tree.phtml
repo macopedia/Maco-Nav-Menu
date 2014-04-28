@@ -26,8 +26,6 @@ Ext.extend(Ext.tree.TreePanel.Enhanced, Ext.tree.TreePanel, {
         var parameters = config['parameters'];
         var data = config['data'];
 
-        this.storeId = parameters['store_id'];
-
         if ((typeof parameters['root_visible']) != 'undefined') {
             this.rootVisible = parameters['root_visible']*1;
         }
@@ -118,8 +116,6 @@ function reRenderTree(event, switcher)
     // re-render tree by store switcher
     if (tree && event) {
         var obj = event.target;
-        var newStoreId = obj.value * 1;
-        var storeParam = newStoreId ? 'store/'+newStoreId + '/' : '';
 
         if (obj.switchParams) {
             storeParam += obj.switchParams;
@@ -138,7 +134,7 @@ function reRenderTree(event, switcher)
         // load from cache
         // load from ajax
         new Ajax.Request(url + (url.match(new RegExp('\\?')) ? '&isAjax=true' : '?isAjax=true' ), {
-            parameters : {store: newStoreId, form_key: FORM_KEY},
+            parameters : {form_key: FORM_KEY},
             method     : 'post',
             onComplete : function(transport) {
                 var response = eval('(' + transport.responseText + ')');
@@ -281,12 +277,11 @@ Ext.onReady(function()
 
     defaultLoadTreeParams = {
         parameters : {
-            text        : 'Root',
+            text        : 'Root menu',
             draggable   : false,
             allowDrop   : true,
             id          : 'menu-root',
-            expanded    : true,
-            store_id    : '<php echo $this->_helper()->getStoreId() ?>'
+            expanded    : true
         },
         data : <?php echo $this->getTreeJson() ?>
     };
@@ -430,10 +425,10 @@ function updateContent(url, params, refreshTree) {
                         alert(response.message);
                         needUpdate = false;
                     }
-//                    if(response.ajaxExpired && response.ajaxRedirect) {
-//                        setLocation(response.ajaxRedirect);
-//                        needUpdate = false;
-//                    }
+                    if(response.ajaxExpired && response.ajaxRedirect) {
+                        setLocation(response.ajaxRedirect);
+                        needUpdate = false;
+                    }
                     if (needUpdate){
                         $('add').innerHTML = Translator.translate('Save');
                         selectMode(3);

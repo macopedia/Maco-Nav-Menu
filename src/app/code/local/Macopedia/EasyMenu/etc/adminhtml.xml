@@ -31,7 +31,7 @@
         </resources>
     </acl>
     <menu>
-        <EasyMenu translate="title" module="EasyMenu">
+        <macopedia translate="title" module="EasyMenu">
             <title>Macopedia</title>
             <sort_order>100</sort_order>
             <children>
@@ -41,6 +41,6 @@
                     <action>EasyMenu/adminhtml_index</action>
                 </items>
             </children>
-        </EasyMenu>
+        </macopedia>
     </menu>
 </config>

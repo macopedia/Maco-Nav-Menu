@@ -33,9 +33,10 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
      */
     protected function _initAction()
     {
-        $this->loadLayout()
-            ->_setActiveMenu('easymenu');
         $this->_title($this->__('Macopedia'))->_title($this->__('Easymenu'));
+
+        $this->loadLayout();
+
         return $this;
     }
 
@@ -180,7 +181,7 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array(
                     'data' => $block->getNewTree(),
                     'parameters' => array(
-                        'text'        => 'MENU',
+                        'text'        => 'Root menu',
                         'draggable'   => false,
                         'allowDrop'   => true,
                         'id'          => 'menu-root',
