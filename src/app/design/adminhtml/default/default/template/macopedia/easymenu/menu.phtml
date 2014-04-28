@@ -163,7 +163,6 @@
     }
     function updateParentsList(response) {
         response.data.each(function(el) {
-            console.log(el.id + '>' + el.text);
             var select = $('parent');
             select.insert('<option value=' + el.id + '>' + el.text + '</option');
             if(el.children) {
@@ -179,7 +178,6 @@
             if(child.children) {
                 checkChildren(child);
             }
-            console.log(child.id + '>' + child.text);
         }
     }
     function getTree() {
