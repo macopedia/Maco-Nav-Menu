@@ -156,13 +156,14 @@
         var select = $('parent');
         select.innerHTML = '';
         select.insert('<option value="0">' + " " + '</option>');
-        select.value = 0;
+
         response.data.each(function(el) {
             select.insert('<option value=' + el.id + '>' + el.text + '</option>');
             if(el.children) {
                 checkChildren(el);
             }
         });
+        select.value = 0;
     }
     function checkChildren(el) {
         var child;
