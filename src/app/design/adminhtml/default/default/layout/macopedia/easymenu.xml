@@ -13,7 +13,7 @@
         </reference>
         <reference name="left">
             <block type="EasyMenu/adminhtml_easyMenu_tree" name="menu-tree"
-                   template="macopedia/easymenu/menu-tree.phtml"/>
+                   template="macopedia/easymenu/tree.phtml"/>
         </reference>
         <reference name="head">
             <action method="addItem"><type>skin_css</type><name>macopedia/easymenu/css/easymenu.css</name><params/></action>
