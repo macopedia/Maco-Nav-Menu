@@ -17,9 +17,9 @@ class Macopedia_EasyMenu_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getStoreId()
     {
-        if(Mage::app()->getStore()->isAdmin()) {
+        if (Mage::app()->getStore()->isAdmin()) {
             $storeId = Mage::app()->getRequest()->getParam('store');
-            if(!$storeId) {
+            if (!$storeId) {
                 $storeId = $this->getDefaultStoreId();
             }
         } else {
@@ -35,10 +35,7 @@ class Macopedia_EasyMenu_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getDefaultStoreId()
     {
-        return Mage::app()
-            ->getWebsite(true)
-            ->getDefaultGroup()
-            ->getDefaultStoreId();
+        return Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
     }
 
     /**
@@ -48,22 +45,19 @@ class Macopedia_EasyMenu_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getMenuTree()
     {
-        $menuCollection = Mage::getModel('EasyMenu/EasyMenu')
-            ->getCollection()
-            ->addFieldToFilter('store', array(
-                'eq' => $this->getStoreId()
-            ))
-            ->addFieldToFilter('parent', array(
-                'eq' => 0
-            ));
+        $menuCollection = Mage::getModel('EasyMenu/EasyMenu')->getCollection()->addFieldToFilter(
+                'store', array('eq' => $this->getStoreId())
+            )->addFieldToFilter(
+                'parent', array('eq' => 0)
+            );
 
-        $menuCollection->setOrder('priority','asc');
+        $menuCollection->setOrder('priority', 'asc');
 
         $jsonArray = array();
 
         foreach ($menuCollection as $item) {
-            /* @var $item Macopedia_EasyMenu_Model_EasyMenu*/
-            if($item->getParent()==0) {
+            /* @var $item Macopedia_EasyMenu_Model_EasyMenu */
+            if ($item->getParent() == 0) {
 
                 $jsonElement = $this->prepareItem($item);
 
@@ -95,7 +89,7 @@ class Macopedia_EasyMenu_Helper_Data extends Mage_Core_Helper_Abstract
         $children = $model->getChildrenCategories($item->getId(), true);
 
         $jsonChildren = array();
-        foreach($children as $child) {
+        foreach ($children as $child) {
             $json = $this->prepareItem($child);
             $children = $this->prepareChildren($child);
             if (!empty($children)) {
@@ -114,15 +108,9 @@ class Macopedia_EasyMenu_Helper_Data extends Mage_Core_Helper_Abstract
      */
     protected function prepareItem($item)
     {
-        return array(
-            'text'  => $item->getName(),
-            'id'    => $item->getId(),
-            'parent'   => $item->getParent(),
-            'value'   => $item->getValue(),
-            'priority'  => $item->getPriority(),
-            'cls'   => 'folder',
-            'store' => $item->getStore()
-        );
+        return array('text'  => $item->getName(), 'id' => $item->getId(), 'parent' => $item->getParent(),
+                     'value' => $item->getValue(), 'priority' => $item->getPriority(), 'cls' => 'folder',
+                     'store' => $item->getStore());
     }
 
 }
