@@ -79,39 +79,10 @@ class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
     public function isElementActive($url)
     {
         if($url === $this->getCurrentUrl()) {
-
-            $findActiveElement = $this->findActiveElement();
-
-            if(!$findActiveElement) {
-                $this->setActiveElement();
-                return true;
-            }
-
             return true;
         }
 
         return false;
-    }
-
-    /**
-     * Check if active element was already find
-     *
-     * @return bool|mixed
-     */
-    public function findActiveElement()
-    {
-        if(Mage::registry(self::REGISTRY_KEY_ACTIVE_ELEMENT)) {
-            return Mage::registry(self::REGISTRY_KEY_ACTIVE_ELEMENT);
-        }
-        return false;
-    }
-
-    /**
-     * Set active element in registry
-     */
-    public function setActiveElement()
-    {
-        Mage::register(self::REGISTRY_KEY_ACTIVE_ELEMENT, true);
     }
 
     /**
