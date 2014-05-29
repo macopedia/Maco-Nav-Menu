@@ -1,6 +1,7 @@
 <?php
 class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
 {
+    const REGISTRY_KEY_ACTIVE_ELEMENT = 'find_active_element';
 
     public function getRootCategories()
     {
@@ -33,16 +34,32 @@ class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
 
     public function renderCategory($category, $admin = true)
     {
-        //var_dump($category['type'].' '.$category['value']);
         $children = $this->getChildrenCategories($category['id']);
         $html = '';
         if ($admin) {
             $html .= '<li><span id="el-' . $category['id'] . '" onclick="getElement(' . $category['id'] . ',this);">' . $category['name'] . '</span>';
-        } else{
+        } else {
             $url = $this->getLink($category['type'], $category['value']);
-            if($url)
-                $html .= '<li><a href="' .$url. '" id="el-' . $category['id'] . '">' . $category['name'] . '</a>';
+            if ($url) {
+
+                $html .= '<li';
+
+                if (count($children)) {
+                    $html .= ' class="has-sublist"';
+                }
+
+                $html .= '>';
+
+                if ($this->isElementActive($url)) {
+                    $html .= '<a class="current_page" ';
+                } else {
+                    $html .= '<a ';
+                }
+
+                $html .= ' href="' .$url. '" id="el-' . $category['id'] . '">' . $category['name'] . '</a>';
+            }
         }
+
         if (count($children)) $html .= '<ul id="' . $category['parent'] . '">';
         foreach ($children as $child) {
             $html .= $this->renderCategory($child, $admin);
@@ -52,4 +69,63 @@ class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
         return $html;
     }
 
+    /**
+     * Check if element in menu is active
+     *
+     * @param $url
+     *
+     * @return bool
+     */
+    public function isElementActive($url)
+    {
+        if($url === $this->getCurrentUrl()) {
+
+            $findActiveElement = $this->findActiveElement();
+
+            if(!$findActiveElement) {
+                $this->setActiveElement();
+                return true;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if active element was already find
+     *
+     * @return bool|mixed
+     */
+    public function findActiveElement()
+    {
+        if(Mage::registry(self::REGISTRY_KEY_ACTIVE_ELEMENT)) {
+            return Mage::registry(self::REGISTRY_KEY_ACTIVE_ELEMENT);
+        }
+        return false;
+    }
+
+    /**
+     * Set active element in registry
+     */
+    public function setActiveElement()
+    {
+        Mage::register(self::REGISTRY_KEY_ACTIVE_ELEMENT, true);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentUrl()
+    {
+        $params = array(
+            '_nosid' => true,
+            '_current' => true,
+            '_use_rewrite' => true,
+            '_store_to_url' => true
+        );
+
+        return Mage::getUrl('', $params);
+    }
 }
