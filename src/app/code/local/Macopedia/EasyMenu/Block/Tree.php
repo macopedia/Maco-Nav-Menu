@@ -51,7 +51,7 @@ class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
                 $html .= '>';
 
                 if ($this->isElementActive($url)) {
-                    $html .= '<a class="current_page" ';
+                    $html .= '<a class="current-page" ';
                 } else {
                     $html .= '<a ';
                 }
