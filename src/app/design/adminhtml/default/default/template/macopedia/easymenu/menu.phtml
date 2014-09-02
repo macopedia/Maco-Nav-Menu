@@ -50,7 +50,11 @@
                         <td class="value">
                             <select id="catalog" name="value" class="validate-select">
                                 <option value=""/>
-                                <?php foreach ($this->getStoreCategories() as $cat): ?>
+                                <?php foreach ($this->getStoreCategories() as $_category){
+                                    $_categories[$_category->getName()] = $_category;}
+                                ksort($_categories);
+                                ?>
+                                <?php foreach ($_categories as $cat): ?>
                                     <?php if($cat->getName() && ($cat->getLevel() != 1)): ?>
                                         <option value="<?php echo($cat->getId()); ?>"><?php echo $cat->getName(); ?></option>
                                     <?php endif;?>
