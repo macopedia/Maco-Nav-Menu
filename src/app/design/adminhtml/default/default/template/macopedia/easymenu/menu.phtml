@@ -52,7 +52,6 @@
                                 <option value=""/>
                                 <?php foreach ($this->getStoreCategories() as $_category){
                                     $_categories[$_category->getName()] = $_category;}
-                                ksort($_categories);
                                 ?>
                                 <?php foreach ($_categories as $cat): ?>
                                     <?php if($cat->getName() && ($cat->getLevel() != 1)): ?>

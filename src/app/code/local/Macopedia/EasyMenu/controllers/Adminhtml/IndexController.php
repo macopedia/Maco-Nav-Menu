@@ -8,13 +8,16 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
     {
         $this->_initAction();
 
-        $store = Mage::getModel('core/store')->load($this->_helper()->getStoreId());
+        $store = Mage::getsModel('core/store')->load($this->_helper()->getStoreId());
         $rootCategoryId = $store->getRootCategoryId();
+        /** @var Mage_Catalog_Model_Resource_Category_Collection $categories */
         $categories = Mage::getModel('catalog/category')
             ->getCollection()
+            ->setStore($store)
             ->addAttributeToFilter('path', array('like' => "1/{$rootCategoryId}/%"))
             ->addFieldToFilter('is_active' ,array("in"=>array('1')))
-            ->addAttributeToSelect('name');
+            ->addAttributeToSelect('name')
+            ->setOrder('name', "ASC");
         Mage::register('categories', $categories);
 
         $cms = Mage::getModel('cms/page')->getCollection()
