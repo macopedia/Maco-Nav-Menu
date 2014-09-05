@@ -8,7 +8,7 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
     {
         $this->_initAction();
 
-        $store = Mage::getsModel('core/store')->load($this->_helper()->getStoreId());
+        $store = Mage::getModel('core/store')->load($this->_helper()->getStoreId());
         $rootCategoryId = $store->getRootCategoryId();
         /** @var Mage_Catalog_Model_Resource_Category_Collection $categories */
         $categories = Mage::getModel('catalog/category')
