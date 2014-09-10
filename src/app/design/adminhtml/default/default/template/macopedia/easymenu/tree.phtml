@@ -136,6 +136,7 @@ function reRenderTree(event, switcher)
         new Ajax.Request(url + (url.match(new RegExp('\\?')) ? '&isAjax=true' : '?isAjax=true' ), {
             parameters : {form_key: FORM_KEY},
             method     : 'post',
+            cache: false,
             onComplete : function(transport) {
                 var response = eval('(' + transport.responseText + ')');
                 if (!response['parameters']) {
@@ -179,6 +180,7 @@ function _renderNewTree(config, storeParam)
     if (selectedNode) {
         url = url + 'id/' + config.parameters.id;
     }
+    tree.expandAll();
 }
 
 Ext.onReady(function()
@@ -335,6 +337,7 @@ function pageMove(obj)
                     new Ajax.Request(url, {
                         parameters : {store: <?php echo (int) $this->getStoreId() ?>, form_key: FORM_KEY},
                         method     : 'post',
+                        cache: false,
                         onComplete : function(transport) {
                             var response = eval('(' + transport.responseText + ')');
                             if (!response['parameters']) {
