@@ -23,7 +23,7 @@ class Macopedia_EasyMenu_Model_EasyMenu extends Mage_Core_Model_Abstract
     /**
      * Get root categories
      *
-     * @return mixed
+     * @return array
      */
     public function getRootCategories()
     {

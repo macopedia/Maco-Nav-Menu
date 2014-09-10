@@ -1,6 +1,13 @@
-<?php if(Mage::helper('EasyMenu')->isEnabled()): ?>
+<?php
+/**
+ * @var Macopedia_EasyMenu_Block_Tree $this
+ */
+if(Mage::helper('EasyMenu')->isEnabled()): ?>
     <ul id="nav">
         <?php
+        /**
+         * @var $cat array
+         */
         foreach($this->getRootCategories() as $cat){
             echo $this->renderCategory($cat, false);
         }
