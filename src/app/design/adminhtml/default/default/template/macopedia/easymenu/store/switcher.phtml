@@ -1,3 +1,4 @@
+<?php $_helper =  Mage::helper('EasyMenu'); ?>
 <?php if ($websites = $this->getWebsites()): ?>
 <p class="switcher"><label for="store_switcher"><?php echo $this->__('Choose Store View') ?>:</label>
 <select name="store_switcher" id="store_switcher" onchange="return switchStore(this);">
@@ -14,7 +15,7 @@
                     <?php $showGroup = true; ?>
                     <optgroup label="&nbsp;&nbsp;&nbsp;<?php echo $group->getName() ?>">
                 <?php endif; ?>
-                <option value="<?php echo $store->getId() ?>"<?php if($this->getStoreId() == $store->getId()): ?> selected="selected"<?php endif; ?>>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $store->getName() ?></option>
+                    <option value="<?php echo $store->getId() ?>" <?php if($this->getStoreId() == $store->getId() || $store->getId() === $_helper->getStoreId()): ?> selected="selected"<?php endif; ?>>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $store->getName() ?></option>
             <?php endforeach; ?>
             <?php if ($showGroup): ?>
                 </optgroup>
