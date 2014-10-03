@@ -84,4 +84,18 @@ class Macopedia_EasyMenu_Block_Menu extends Mage_Core_Block_Template
     {
         return Mage::helper('EasyMenu');
     }
+
+    public function getPathWithName($cat)
+    {
+        $category = Mage::getModel('catalog/category')->load($cat->getId());
+        $coll = $category->getResourceCollection();
+        $pathIds = $category->getPathIds();
+        $coll->addAttributeToSelect('name');
+        $coll->addAttributeToFilter('entity_id', array('in' => $pathIds));
+        $result = '';
+        foreach ($coll as $singleCat) {
+            $result .= $singleCat->getName().'/';
+        }
+        return $result;
+    }
 }
