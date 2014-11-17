@@ -11,6 +11,10 @@
  */
 class Macopedia_EasyMenu_Model_EasyMenu extends Mage_Core_Model_Abstract
 {
+    const NODE_TYPE_CATEGORY = 1;
+    const NODE_TYPE_CMS = 2;
+    const NODE_TYPE_EXTERNAL = 3;
+
     /**
      * construct
      */

@@ -3,6 +3,35 @@ class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
 {
     const REGISTRY_KEY_ACTIVE_ELEMENT = 'find_active_element';
 
+    /**
+     * Set cache data
+     */
+    protected function _construct()
+    {
+        $this->addCacheTag(array(
+            Mage_Catalog_Model_Category::CACHE_TAG,
+            Mage_Core_Model_Store_Group::CACHE_TAG,
+            Mage_Core_Model_Store::CACHE_TAG,
+            Mage_Cms_Model_Page::CACHE_TAG
+        ));
+    }
+
+    /**
+     * Get Key pieces for caching block content
+     *
+     * @return array
+     */
+    public function getCacheKeyInfo()
+    {
+        $cacheId = array(
+            'MACOPEDIA_EASY_MENU',
+            Mage::app()->getStore()->getId(),
+            Mage::getDesign()->getPackageName(),
+            Mage::getDesign()->getTheme('template'),
+        );
+        return $cacheId;
+    }
+
     public function getRootCategories()
     {
         return Mage::getModel('EasyMenu/EasyMenu')->getRootCategories();
@@ -18,20 +47,31 @@ class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
         return Mage::getModel('EasyMenu/EasyMenu')->getChildrenCategories($catId);
     }
 
-    private function getLink($type, $value)
+    /**
+     * @param int $type
+     * @param mixed $value
+     * @return string
+     */
+    protected function getLink($type, $value)
     {
-        if ($type == 1)
+        $url = '';
+        if ($type == Macopedia_EasyMenu_Model_EasyMenu::NODE_TYPE_CATEGORY) {
             $url = Mage::getModel("catalog/category")->load($value)->getUrl();
-        else if ($type == 2) {
+
+        } elseif ($type == Macopedia_EasyMenu_Model_EasyMenu::NODE_TYPE_CMS) {
             $url = Mage::helper('cms/page')->getPageUrl($value);
-        }
-        else if($type ==3)
+
+        } elseif ($type == Macopedia_EasyMenu_Model_EasyMenu::NODE_TYPE_EXTERNAL) {
             $url = $value;
-        if($url)
-            return $url;
-        else return false;
+        }
+        return $url;
     }
 
+    /**
+     * @param array $category
+     * @param bool $admin
+     * @return string
+     */
     public function renderCategory($category, $admin = true)
     {
         $children = $this->getChildrenCategories($category['id']);
@@ -50,23 +90,39 @@ class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
 
                 $html .= '>';
 
-                if ($this->isElementActive($url)) {
-                    $html .= '<a class="current-page" ';
-                } else {
-                    $html .= '<a ';
-                }
-
-                $html .= ' href="' .$url. '" id="el-' . $category['id'] . '">' . $category['name'] . '</a>';
+                $html .='<a ' . $this->getLinkClassAttribute($category, $url) . ' href="' .$url. '" id="el-' . $category['id'] . '">' . $category['name'] . '</a>';
             }
         }
 
-        if (count($children)) $html .= '<ul id="' . $category['parent'] . '">';
+        if (count($children)) $html .= '<ul id="children-of-' . $category['parent'] . '">';
         foreach ($children as $child) {
             $html .= $this->renderCategory($child, $admin);
         }
         if (count($children)) $html .= '</ul>';
         $html .= '</li>';
         return $html;
+    }
+
+    protected function getLinkClassAttribute($category, $url) {
+        $attributes = array();
+        $attributes[] = $this->getTypeClass($category);
+
+        if ($this->isElementActive($url)) {
+            $attributes[] = 'current-page';
+        }
+
+        return !empty($attributes)? 'class="' . implode(', ', $attributes) . '"' : '';
+    }
+
+    protected function getTypeClass($category) {
+        switch ($category['type']) {
+            case 1:
+                return 'menu-item-category-' . $category['value'];
+            case 2:
+                return 'menu-item-cms-' . $category['value'];
+            default:
+                return 'menu-item-direct';
+        }
     }
 
     /**
@@ -78,7 +134,8 @@ class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
      */
     public function isElementActive($url)
     {
-        if($url === $this->getCurrentUrl()) {
+        //do not cache active state
+        if (is_null($this->getCacheLifetime()) && $url === $this->getCurrentUrl()) {
             return true;
         }
 
