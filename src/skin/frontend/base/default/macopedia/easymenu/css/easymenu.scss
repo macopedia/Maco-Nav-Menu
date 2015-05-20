@@ -1,0 +1,74 @@
+/*!
+ * 	MACOPEDIA 2015
+ *
+ * 	Maco-Nav-Menu
+ *
+ */
+
+
+// Navbar collapse
+// This is default bootstrap variable.
+// You don't need them if you used bootstrap _variables.scss
+//** Point at which the navbar becomes uncollapsed.
+$grid-float-breakpoint: 768px !default;
+
+.maco-nav-menu {
+
+
+  // additional styles for desktop version
+
+  @media (min-width: $grid-float-breakpoint){
+
+    .navbar-header {
+      display:none;
+    }
+
+    .navbar-nav {
+      li {
+        position:relative;
+
+        &:hover {
+          > ul {
+            display:block;
+          }
+        }
+      }
+    }
+
+    .dropdown-menu {
+      ul {
+        left:100%;
+        top:0;
+      }
+    }
+  }
+
+
+
+  // additional styles for mobile version
+
+  @media (max-width: $grid-float-breakpoint - 1){
+
+    .dropdown-menu {
+      display:block;
+      position: static;
+      float: none;
+      width: auto;
+      margin-top: 0;
+      background-color: transparent;
+      border: 0;
+      box-shadow: none;
+
+      ul a {
+        padding-left:25px;
+      }
+
+      ul ul a {
+        padding-left:30px;
+      }
+
+    }
+
+  }
+
+}

@@ -1,12 +1,32 @@
-.navbar-main .navbar-nav li {
-    position:relative;
-}
-
-.navbar-main .navbar-nav li:hover > ul {
+/*!
+ * 	MACOPEDIA 2015
+ *
+ * 	Maco-Nav-Menu
+ *
+ */
+@media (min-width: 768px) {
+  .maco-nav-menu .navbar-header {
+    display: none; }
+  .maco-nav-menu .navbar-nav li {
+    position: relative; }
+    .maco-nav-menu .navbar-nav li:hover > ul {
+      display: block; }
+  .maco-nav-menu .dropdown-menu ul {
+    left: 100%;
+    top: 0; } }
+@media (max-width: 767px) {
+  .maco-nav-menu .dropdown-menu {
     display: block;
-}
+    position: static;
+    float: none;
+    width: auto;
+    margin-top: 0;
+    background-color: transparent;
+    border: 0;
+    box-shadow: none; }
+    .maco-nav-menu .dropdown-menu ul a {
+      padding-left: 25px; }
+    .maco-nav-menu .dropdown-menu ul ul a {
+      padding-left: 30px; } }
 
-.navbar-main .navbar-nav .dropdown-menu  ul {
-    left:100%;
-    top:0;
-}
+/*# sourceMappingURL=easymenu.css.map */
