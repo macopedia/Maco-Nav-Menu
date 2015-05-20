@@ -1,3 +1,12 @@
+.navbar-main .navbar-nav li {
+    position:relative;
+}
+
 .navbar-main .navbar-nav li:hover > ul {
     display: block;
+}
+
+.navbar-main .navbar-nav .dropdown-menu  ul {
+    left:100%;
+    top:0;
 }
