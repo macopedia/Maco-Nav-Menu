@@ -82,7 +82,7 @@ class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
             $url = $this->getLink($category['type'], $category['value']);
             if ($url) {
 
-                $html .= '<li';
+                $html .= '<li ' . $this->getClassAttribute($category, $url);
 
                 if (count($children)) {
                     $html .= ' class="has-sublist"';
@@ -90,11 +90,11 @@ class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
 
                 $html .= '>';
 
-                $html .='<a ' . $this->getLinkClassAttribute($category, $url) . ' href="' .$url. '" id="el-' . $category['id'] . '">' . $category['name'] . '</a>';
+                $html .='<a href="' .$url. '" id="el-' . $category['id'] . '">' . $category['name'] . '</a>';
             }
         }
 
-        if (count($children)) $html .= '<ul id="children-of-' . $category['parent'] . '">';
+        if (count($children)) $html .= '<ul id="children-of-' . $category['parent'] . '" class="dropdown-menu">';
         foreach ($children as $child) {
             $html .= $this->renderCategory($child, $admin);
         }
@@ -103,15 +103,15 @@ class Macopedia_EasyMenu_Block_Tree extends Mage_Core_Block_Template
         return $html;
     }
 
-    protected function getLinkClassAttribute($category, $url) {
+    protected function getClassAttribute($category, $url) {
         $attributes = array();
         $attributes[] = $this->getTypeClass($category);
 
         if ($this->isElementActive($url)) {
-            $attributes[] = 'current-page';
+            $attributes[] = 'active';
         }
 
-        return !empty($attributes)? 'class="' . implode(', ', $attributes) . '"' : '';
+        return !empty($attributes)? 'class="' . implode(' ', $attributes) . '"' : '';
     }
 
     protected function getTypeClass($category) {

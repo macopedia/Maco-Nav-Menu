@@ -3,14 +3,20 @@
  * @var Macopedia_EasyMenu_Block_Tree $this
  */
 if(Mage::helper('EasyMenu')->isEnabled()): ?>
-    <ul id="nav">
-        <?php
-        /**
-         * @var $cat array
-         */
-        foreach($this->getRootCategories() as $cat){
-            echo $this->renderCategory($cat, false);
-        }
-        ?>
-    </ul>
+    <div class="container">
+        <nav class="navbar navbar-default navbar-main" role="navigation">
+            <div class="collapse navbar-collapse navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <?php
+                    /**
+                     * @var $cat array
+                     */
+                    foreach($this->getRootCategories() as $cat){
+                        echo $this->renderCategory($cat, false);
+                    }
+                    ?>
+                </ul>
+            </div>
+        </nav>
+    </div>
 <?php endif; ?>
