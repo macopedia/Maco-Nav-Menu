@@ -4,7 +4,16 @@
  */
 if(Mage::helper('EasyMenu')->isEnabled()): ?>
     <div class="container">
-        <nav class="navbar navbar-default navbar-main" role="navigation">
+        <nav class="navbar navbar-default navbar-main maco-nav-menu" role="navigation">
+            <div class="navbar-header" data-target=".navbar-main-collapse">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Brand</a>
+            </div>
             <div class="collapse navbar-collapse navbar-main-collapse">
                 <ul class="nav navbar-nav">
                     <?php
