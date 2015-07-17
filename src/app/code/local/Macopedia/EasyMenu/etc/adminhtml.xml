@@ -16,16 +16,16 @@
                             </config>
                         </children>
                     </system>
-                    <EasyMenu translate="title" module="EasyMenu">
-                        <title>Macopedia</title>
+                    <macopedia translate="title" module="EasyMenu">
+                        <title>Macopedia menus</title>
                         <sort_order>100</sort_order>
                         <children>
-                            <items translate="title" module="EasyMenu">
+                            <easymenu translate="title" module="EasyMenu">
                                 <title>Easy Menu</title>
                                 <sort_order>0</sort_order>
-                            </items>
+                            </easymenu>
                         </children>
-                    </EasyMenu>
+                    </macopedia>
                 </children>
             </admin>
         </resources>
@@ -35,11 +35,11 @@
             <title>Macopedia</title>
             <sort_order>100</sort_order>
             <children>
-                <items translate="title" module="EasyMenu">
+                <easymenu translate="title" module="EasyMenu">
                     <title>Easy Menu</title>
                     <sort_order>0</sort_order>
                     <action>EasyMenu/adminhtml_index</action>
-                </items>
+                </easymenu>
             </children>
         </macopedia>
     </menu>

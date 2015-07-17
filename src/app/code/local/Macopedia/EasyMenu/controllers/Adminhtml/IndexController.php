@@ -210,4 +210,9 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
     {
         return Mage::helper('EasyMenu');
     }
+
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('macopedia/easymenu');
+    }
 }
