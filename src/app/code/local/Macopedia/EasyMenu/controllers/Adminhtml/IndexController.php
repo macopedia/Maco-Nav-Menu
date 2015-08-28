@@ -103,15 +103,15 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
         $type = $this->getRequest()->getParam('type');
         $value = $this->getRequest()->getParam('value');
         $priority = $this->getRequest()->getParam('priority');
+        /** @var Macopedia_Easymenu_Model_EasyMenu $model */
         $model = Mage::getModel('EasyMenu/EasyMenu');
 
         if ($id) {
             $children = $model->getDescendantsCategories($id);
             $element = $model->load($id);
             $elementParent = $element->getParent();
-            //var_dump($elementParent);
+
             foreach ($children as $child) {
-                //var_dump($child['id'].' '.$parent);
                 if ($child['id'] == $parent) {
                     $child = $model->load($child['id']);
                     $child->setParent($elementParent);
@@ -122,12 +122,13 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
         }
         else{
             $element = Mage::getModel('EasyMenu/EasyMenu');
+
         }
 
         $element->setName($name);
         $element->setType($type);
         $element->setValue($value);
-        $element->setPriority($priority);
+
         $element->setStore($storeId);
 
         if ($parent != $element->getId()) {
@@ -136,6 +137,10 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 
         $element->save();
 
+        if (!$id) {
+            $element->setPriority($element->getId());
+            $element->save();
+        }
         $this->getResponse()->setHeader('Content-type', 'application/json');
         $this->newTreeAction();
     }
