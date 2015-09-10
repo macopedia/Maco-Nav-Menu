@@ -165,7 +165,6 @@
         select.innerHTML = '';
         select.insert('<option value="0">' + " " + '</option>');
         response.data.each(function(el) {
-            console.log(el);
             select.insert('<option value=' + el.id + '>' + el.text + '</option>');
             if(el.children) {
                 checkChildren(el,2);
