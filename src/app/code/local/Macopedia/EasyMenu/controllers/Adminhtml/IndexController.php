@@ -17,7 +17,7 @@ class Macopedia_EasyMenu_Adminhtml_IndexController extends Mage_Adminhtml_Contro
             ->addAttributeToFilter('path', array('like' => "1/{$rootCategoryId}/%"))
             ->addFieldToFilter('is_active' ,array("in"=>array('1')))
             ->addAttributeToSelect('name')
-            ->setOrder('name', "ASC");
+            ->setOrder('path', "ASC");
         Mage::register('categories', $categories);
 
         $cms = Mage::getModel('cms/page')->getCollection()

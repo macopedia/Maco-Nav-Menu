@@ -1,3 +1,6 @@
+<?php
+/** @var $this Macopedia_EasyMenu_Block_Menu*/
+?>
 <div class="left-col">
     <button onclick="addRoot();"><?php echo $this->__('Add parent element'); ?></button>
     <button onclick="addChild();"><?php echo $this->__('Add child element'); ?></button>
@@ -50,12 +53,14 @@
                         <td class="value">
                             <select id="catalog" name="value" class="validate-select">
                                 <option value=""/>
-                                <?php foreach ($this->getStoreCategories() as $_category){
-                                    $_categories[$_category->getId()] = $_category;}
+                                <?php
+                                foreach ($this->getStoreCategories() as $_category) {
+                                    $_categories[$_category->getId()] = $_category;
+                                }
                                 ?>
                                 <?php foreach ($_categories as $cat): ?>
                                     <?php if($cat->getName() && ($cat->getLevel() != 1)): ?>
-                                        <option value="<?php echo($cat->getId()); ?>"><?php echo $cat->getName().' ('.$this->getPathWithName($cat).')'; ?></option>
+                                        <option value="<?php echo($cat->getId()); ?>" class="level-<?php echo $cat->getLevel();?>"><?php echo str_repeat('&nbsp;', ($cat->getLevel()-2)*3) . $cat->getName().' ('.$this->getPathWithName($cat).')'; ?></option>
                                     <?php endif;?>
                                 <?php endforeach; ?>
                             </select>
@@ -160,19 +165,20 @@
         select.innerHTML = '';
         select.insert('<option value="0">' + " " + '</option>');
         response.data.each(function(el) {
+            console.log(el);
             select.insert('<option value=' + el.id + '>' + el.text + '</option>');
             if(el.children) {
-                checkChildren(el);
+                checkChildren(el,2);
             }
         });
     }
-    function checkChildren(el) {
+    function checkChildren(el, level) {
         var child;
         var select = $('parent');
         for(var i = 0; i < el.children.count, child = el.children[i]; i++) {
-            select.insert('<option value=' + child.id + '>' + child.text + '</option>');
+            select.insert('<option value=' + child.id + '>'+ "&nbsp;".times(level*3) + child.text + '</option>');
             if(child.children) {
-                checkChildren(child);
+                checkChildren(child, level+1);
             }
         }
     }
