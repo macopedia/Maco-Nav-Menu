@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <layout version="0.1.0">
-    <easymenu_adminhtml_index_index>
+    <adminhtml_easymenu_index_index>
         <reference name="head">
             <action method="setCanLoadExtJs"><flag>1</flag></action>
         </reference>
@@ -18,5 +18,5 @@
         <reference name="head">
             <action method="addItem"><type>skin_css</type><name>macopedia/easymenu/css/easymenu.css</name><params/></action>
         </reference>
-    </easymenu_adminhtml_index_index>
+    </adminhtml_easymenu_index_index>
 </layout>

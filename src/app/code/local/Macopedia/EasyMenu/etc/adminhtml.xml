@@ -38,7 +38,7 @@
                 <easymenu translate="title" module="EasyMenu">
                     <title>Easy Menu</title>
                     <sort_order>0</sort_order>
-                    <action>EasyMenu/adminhtml_index</action>
+                    <action>adminhtml/EasyMenu_index</action>
                 </easymenu>
             </children>
         </macopedia>

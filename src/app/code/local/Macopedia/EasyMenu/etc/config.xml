@@ -16,13 +16,13 @@
     </frontend>
     <admin>
         <routers>
-            <EasyMenu>
-                <use>admin</use>
-                <args>
-                    <module>Macopedia_EasyMenu</module>
-                    <frontName>easymenu</frontName>
-                </args>
-            </EasyMenu>
+            <adminhtml>
+				<args>
+					<modules>
+						<EasyMenu before="Mage_Adminhtml">Macopedia_EasyMenu_Adminhtml</EasyMenu>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
     <adminhtml>
